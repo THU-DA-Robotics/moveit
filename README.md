@@ -1,3 +1,54 @@
+# Mingrui's moveit.
+
+## 从源码安装 MoveIt
+
+参考 [MoveIt Document Getting Started](https://ros-planning.github.io/moveit_tutorials/doc/getting_started/getting_started.html):
+
+```
+# 准备工作
+rosdep update
+sudo apt update
+sudo apt dist-upgrade
+
+sudo apt install ros-noetic-catkin python3-catkin-tools python3-osrf-pycommon
+sudo apt install python3-wstool
+
+# 工作空间
+cd <WORK_SPACE>/src
+
+# 下载全部 moveit 其他没有修改的包
+wstool init .
+wstool merge -t . https://raw.githubusercontent.com/ros-planning/moveit/master/moveit.rosinstall
+wstool remove moveit_tutorials
+wstool remove moveit
+wstool remove panda_moveit_config
+wstool update -t .
+```
+
+安装修改后的包：
+
+```
+cd <WORK_SPACE>/src
+
+# 下载 moveit
+git clone https://github.com/THU-DA-Robotics/moveit.git -b mingrui-noetic
+```
+
+安装其他依赖：
+
+```
+cd <WORK_SPACE>/src
+rosdep install -y --from-paths . --ignore-src --rosdistro noetic
+```
+
+
+
+
+
+---
+
+
+
 <img src="https://moveit.ros.org/assets/logo/moveit_logo-black.png" alt="MoveIt Logo" width="200"/>
 
 The [MoveIt Motion Planning Framework for ROS](http://moveit.ros.org). For the ROS 2 repository see [MoveIt 2](https://github.com/ros-planning/moveit2).

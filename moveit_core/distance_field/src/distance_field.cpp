@@ -168,14 +168,41 @@ void DistanceField::getGradientMarkers(double min_distance, double max_distance,
           marker.pose.position.y = world_y;
           marker.pose.position.z = world_z;
 
-          // Eigen::Vector3d axis = gradient.cross(unitX).norm() > 0 ? gradient.cross(unitX) : unitY;
-          // double angle = -gradient.angle(unitX);
-          // Eigen::AngleAxisd rotation(angle, axis);
+            // // mingrui add
+            // double closest_point_x = world_x - (gradient.x()/gradient.norm())*distance;
+            // double closest_point_y = world_y - (gradient.y()/gradient.norm())*distance;
+            // double closest_point_z = world_z - (gradient.z()/gradient.norm())*distance;
+            // marker.pose.position.x = closest_point_x;
+            // marker.pose.position.y = closest_point_y;
+            // marker.pose.position.z = closest_point_z;
 
-          // marker.pose.orientation.x = rotation.linear().x();
-          // marker.pose.orientation.y = rotation.linear().y();
-          // marker.pose.orientation.z = rotation.linear().z();
-          // marker.pose.orientation.w = rotation.linear().w();
+        // begin mingrui add: 显示gradient marker的orientation，原版没有实现
+            Eigen::Vector3d unitX(1.0, 0.0, 0.0);
+            Eigen::Vector3d unitY(0.0, 1.0, 0.0);
+
+            // unitX 和 gradient之间的旋转轴
+            Eigen::Vector3d axis = unitX.cross(gradient).normalized();
+            if(axis.norm() == 0) axis = unitY;
+            // unitX 和 gradient之间的夹角
+            double angle = std::atan2(unitX.cross(gradient).norm(), unitX.dot(gradient));
+
+            Eigen::AngleAxisd rotation(angle, axis);
+            Eigen::Quaterniond q = Eigen::Quaterniond(rotation);
+
+            marker.pose.orientation.x = q.coeffs()(0);
+            marker.pose.orientation.y = q.coeffs()(1);
+            marker.pose.orientation.z = q.coeffs()(2);
+            marker.pose.orientation.w = q.coeffs()(3);
+        // end
+        
+        //   Eigen::Vector3d axis = gradient.cross(unitX).norm() > 0 ? gradient.cross(unitX) : unitY;
+        //   double angle = -gradient.angle(unitX);
+        //   Eigen::AngleAxisd rotation(angle, axis);
+
+        //   marker.pose.orientation.x = rotation.linear().x();
+        //   marker.pose.orientation.y = rotation.linear().y();
+        //   marker.pose.orientation.z = rotation.linear().z();
+        //   marker.pose.orientation.w = rotation.linear().w();
 
           marker.scale.x = getResolution();
           marker.scale.y = getResolution();

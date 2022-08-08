@@ -204,6 +204,12 @@ public:
     return distance_field_cache_entry_->distance_field_;
   }
 
+// mingrui add function
+    distance_field::DistanceFieldConstPtr getWorldDistanceFieldConstPtr() const
+    {
+        return distance_field_cache_entry_world_->distance_field_;
+    }
+
   collision_detection::GroupStateRepresentationConstPtr getLastGroupStateRepresentation() const
   {
     return last_gsr_;

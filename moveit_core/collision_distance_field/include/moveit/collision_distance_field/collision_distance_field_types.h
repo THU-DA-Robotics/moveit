@@ -348,6 +348,9 @@ public:
 
   PosedBodyPointDecomposition(const std::shared_ptr<const octomap::OcTree>& octree);
 
+  // mingrui add: 从一系列collision points，创建PosedBodyPointDecomposition
+  PosedBodyPointDecomposition(const EigenSTL::vector_Vector3d& points);
+
   const EigenSTL::vector_Vector3d& getCollisionPoints() const
   {
     return posed_collision_points_;
