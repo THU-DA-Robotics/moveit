@@ -346,6 +346,7 @@ public:
 
   PosedBodyPointDecomposition(const BodyDecompositionConstPtr& body_decomposition, const Eigen::Isometry3d& pose);
 
+    // mingrui: 将OcTree转为points的代码是错误的。
   PosedBodyPointDecomposition(const std::shared_ptr<const octomap::OcTree>& octree);
 
   // mingrui add: 从一系列collision points，创建PosedBodyPointDecomposition
