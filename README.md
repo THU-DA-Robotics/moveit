@@ -1,5 +1,6 @@
 # Mingrui's moveit.
 
+
 ## 从源码安装 MoveIt
 
 参考 [MoveIt Document Getting Started](https://ros-planning.github.io/moveit_tutorials/doc/getting_started/getting_started.html):
@@ -14,7 +15,7 @@ sudo apt install ros-noetic-catkin python3-catkin-tools python3-osrf-pycommon
 sudo apt install python3-wstool
 
 # 工作空间
-cd <WORK_SPACE>/src
+cd <WORKSPACE>/src
 
 # 下载全部 moveit 其他没有修改的包
 wstool init .
@@ -25,10 +26,10 @@ wstool remove panda_moveit_config
 wstool update -t .
 ```
 
-安装修改后的包：
+安装修改后的 moveit 系列包：
 
 ```
-cd <WORK_SPACE>/src
+cd <WORKSPACE>/src
 
 # 下载 moveit
 git clone https://github.com/THU-DA-Robotics/moveit.git -b mingrui-noetic
@@ -37,9 +38,46 @@ git clone https://github.com/THU-DA-Robotics/moveit.git -b mingrui-noetic
 安装其他依赖：
 
 ```
-cd <WORK_SPACE>/src
+cd <WORK_PACE>/src
 rosdep install -y --from-paths . --ignore-src --rosdistro noetic
 ```
+
+编译：
+```
+cd <WORK_PACE>
+catkin_make -j8
+```
+
+## Note
+### 关于 distance_field 的 resolution
+在 moveit_core/collision_distance_field/collision_env_distance_field.h 中定义了默认的 resolution（0.02）和 size，目前这些参数不太方便从外面传入。如需修改，还是直接在源文件里改吧。
+
+## Change Log
+
+### 2022.08.08
+
+Problem: 当环境障碍物形式为octomap时，原代码没有正确地将octree转换为points，添加进planning_scene维护的distance_field里面。导致使用distance_field得到的距离障碍物的distance和gradient都是错误的。
+
+Modification:
+* 主要修改了 moveit_core/collision_distance_field/collision_env_distance_field.cpp中的updateDistanceObject()中将octree转为points的方式。
+* 涉及到的文件包括：
+    * moveit_core/collision_distance_field
+        * collision_distance_field_types.h (cpp)
+        * collision_env_distance_field.h (cpp)
+    * moveit_core/distance_field
+        * distance_field.h (cpp)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
