@@ -17,6 +17,9 @@ sudo apt install python3-wstool
 # 工作空间
 cd <WORKSPACE>/src
 
+mkdir moveit_all
+cd moveit_all
+
 # 下载全部 moveit 其他没有修改的包
 wstool init .
 wstool merge -t . https://raw.githubusercontent.com/ros-planning/moveit/master/moveit.rosinstall
