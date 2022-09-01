@@ -32,7 +32,7 @@ wstool update -t .
 安装修改后的 moveit 系列包：
 
 ```
-cd <WORKSPACE>/src
+cd <WORKSPACE>/src/moveit_all
 
 # 下载 moveit
 git clone https://github.com/THU-DA-Robotics/moveit.git -b mingrui-noetic
