@@ -10,6 +10,9 @@ on:
     branches:
       - master
 
+permissions:
+  contents: read # to fetch code (actions/checkout)
+
 jobs:
   default:
     strategy:
@@ -19,7 +22,7 @@ jobs:
           - IMAGE: noetic-ci
             CCOV: true
             BUILDER: catkin_tools_devel
-          - IMAGE: noetic-ci-shadow-fixed
+          - IMAGE: noetic-ci-testing
             IKFAST_TEST: true
             CATKIN_LINT: true
             CLANG_TIDY: pedantic
@@ -158,6 +161,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: default # only trigger on success of default build job
     if: github.event_name == 'push' && github.repository_owner == 'ros-planning' && github.ref == 'refs/heads/master'
+    permissions:
+      contents: write # allow pushing
     steps:
       - uses: actions/checkout@v2
       - name: Fast-forward noetic-devel to sync with master
